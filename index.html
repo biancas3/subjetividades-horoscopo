@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horóscopo Subjetividades</title>
+<meta name="description" content="Descubra qual sujeito você é pela sua data de nascimento: freudiano, gestaltiano ou behaviorista!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Pacifico&family=Patrick+Hand&family=Bangers&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #f0286e;
+    --pink-light: #ff9ec4;
+    --pink-pale: #ffe3ef;
+    --purple: #352a6b;
+    --yellow: #ffe14d;
+    --cyan: #37b6e9;
+    --cream: #fdf3e3;
+    --ink: #2a1d3d;
+    --freud: #f0286e;
+    --gestalt: #f5b700;
+    --behav: #1f9ad6;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1.15rem;
+    color: var(--ink);
+    background-color: #ffd6e7;
+    background-image:
+      radial-gradient(circle at 10px 10px, #fff 2px, transparent 3px),
+      radial-gradient(circle at 30px 30px, #ffb3d1 3px, transparent 4px);
+    background-size: 40px 40px;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ===== letreiro ===== */
+  .ticker {
+    background: var(--purple);
+    color: var(--yellow);
+    font-family: 'Bangers', cursive;
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 4px dashed var(--pink);
+  }
+  .ticker span {
+    display: inline-block;
+    padding: 6px 0;
+    padding-left: 100%;
+    animation: ticker 28s linear infinite;
+  }
+  @keyframes ticker { to { transform: translateX(-100%); } }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px 40px; }
+
+  /* ===== cabeçalho ===== */
+  header { text-align: center; padding: 28px 0 8px; position: relative; }
+  .edicao {
+    display: inline-block;
+    font-family: 'Bangers', cursive;
+    background: var(--yellow);
+    padding: 4px 14px;
+    transform: rotate(-3deg);
+    border: 3px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    letter-spacing: 1px;
+  }
+  .logo {
+    font-family: 'Chewy', cursive;
+    font-size: clamp(2.6rem, 10vw, 5.4rem);
+    color: var(--pink);
+    margin: 14px 0 0;
+    line-height: 1;
+    -webkit-text-stroke: 2px #fff;
+    text-shadow: 4px 4px 0 #fff, 7px 7px 0 var(--purple);
+    transform: rotate(-2deg);
+  }
+  .sublogo {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(1.3rem, 5vw, 2rem);
+    color: var(--purple);
+    margin: 10px 0 0;
+  }
+  .sublogo .heart { color: var(--pink); display: inline-block; animation: pulse 1s ease-in-out infinite; }
+  @keyframes pulse { 50% { transform: scale(1.3); } }
+
+  /* ===== caixas tipo revista ===== */
+  .box {
+    background: #fff;
+    border: 4px solid var(--ink);
+    border-radius: 18px;
+    box-shadow: 8px 8px 0 var(--purple);
+    padding: 24px;
+    margin: 28px 0;
+    position: relative;
+  }
+  .sticker {
+    position: absolute;
+    top: -20px;
+    right: 18px;
+    background: var(--cyan);
+    color: #fff;
+    font-family: 'Bangers', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    transform: rotate(6deg);
+    animation: wiggle 2.5s ease-in-out infinite;
+  }
+  @keyframes wiggle { 50% { transform: rotate(-4deg) scale(1.05); } }
+
+  h2 {
+    font-family: 'Chewy', cursive;
+    font-size: clamp(1.7rem, 6vw, 2.3rem);
+    color: var(--purple);
+    margin: 0 0 8px;
+  }
+  h2 .hl { background: linear-gradient(transparent 55%, var(--yellow) 55%); padding: 0 4px; }
+
+  .intro p { margin: 6px 0; }
+
+  /* ===== formulário ===== */
+  form { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; margin-top: 16px; }
+  .field { display: flex; flex-direction: column; flex: 1 1 160px; }
+  label { font-family: 'Chewy', cursive; color: var(--pink); font-size: 1.25rem; }
+  input, select {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.2rem;
+    padding: 10px 12px;
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    background: var(--pink-pale);
+    color: var(--ink);
+    width: 100%;
+  }
+  input:focus, select:focus { outline: 3px dashed var(--pink); outline-offset: 2px; }
+  .btn {
+    font-family: 'Chewy', cursive;
+    font-size: 1.5rem;
+    color: #fff;
+    background: var(--pink);
+    border: 4px solid var(--ink);
+    border-radius: 999px;
+    padding: 10px 26px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--ink);
+    transition: transform .1s, box-shadow .1s;
+    flex: 1 1 100%;
+  }
+  .btn:hover { transform: translate(-2px,-2px) rotate(-1deg); box-shadow: 7px 7px 0 var(--ink); }
+  .btn:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 var(--ink); }
+  .btn.small { font-size: 1.1rem; padding: 8px 18px; flex: 0 0 auto; }
+  .btn.alt { background: var(--purple); }
+  .error { color: var(--pink); font-weight: bold; min-height: 1.4em; margin: 6px 0 0; }
+
+  /* ===== carregando ===== */
+  #loading { display: none; text-align: center; padding: 30px 10px; }
+  .crystal { font-size: 4rem; display: inline-block; animation: spin 1.2s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loadingText { font-family: 'Pacifico', cursive; color: var(--purple); font-size: 1.4rem; }
+
+  /* ===== resultado ===== */
+  #result { display: none; }
+  .result-head {
+    border-radius: 14px;
+    padding: 22px 18px;
+    color: #fff;
+    text-align: center;
+    border: 4px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .result-head::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,.35) 2px, transparent 3px);
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+  .result-head > * { position: relative; }
+  .result-head .emoji { font-size: 4rem; line-height: 1; }
+  .result-head .voce { font-family: 'Pacifico', cursive; font-size: 1.3rem; margin: 6px 0 0; }
+  .result-head .titulo {
+    font-family: 'Chewy', cursive;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    margin: 0;
+    text-shadow: 3px 3px 0 var(--ink);
+    line-height: 1.05;
+  }
+  .result-head .mentor { font-family: 'Bangers', cursive; letter-spacing: 1px; font-size: 1.2rem; margin-top: 6px; }
+  .freud   { background: var(--freud); }
+  .gestalt { background: var(--gestalt); }
+  .behav   { background: var(--behav); }
+
+  .lead { font-size: 1.25rem; margin: 18px 0 6px; }
+  .lead strong { color: var(--pink); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 16px; }
+  .card {
+    background: var(--cream);
+    border: 3px dashed var(--purple);
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+  .card h3 { font-family: 'Chewy', cursive; color: var(--purple); margin: 0 0 4px; font-size: 1.35rem; }
+  .card p { margin: 0; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
+  .stat {
+    background: var(--yellow);
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 8px 10px;
+    text-align: center;
+    transform: rotate(-1deg);
+  }
+  .stat:nth-child(even) { transform: rotate(1.5deg); background: var(--pink-light); }
+  .stat b { display: block; font-family: 'Bangers', cursive; letter-spacing: 1px; font-size: 1rem; }
+
+  .meter { margin-top: 18px; }
+  .meter-row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+  .meter-row span:first-child { width: 110px; flex-shrink: 0; font-family: 'Chewy', cursive; }
+  .bar { flex: 1; height: 22px; border: 3px solid var(--ink); border-radius: 999px; background: #fff; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; transition: width 1.2s cubic-bezier(.2,1.4,.4,1); }
+  .meter-row span:last-child { width: 46px; text-align: right; font-family: 'Bangers', cursive; font-size: 1.1rem; }
+
+  .quote {
+    margin: 20px 0 0;
+    padding: 16px 18px;
+    background: var(--purple);
+    color: #fff;
+    border-radius: 14px;
+    font-family: 'Pacifico', cursive;
+    font-size: 1.15rem;
+    transform: rotate(-1deg);
+  }
+  .quote small { display: block; font-family: 'Patrick Hand', cursive; color: var(--yellow); margin-top: 6px; font-size: 1rem; }
+
+  .asc {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: var(--pink-pale);
+    border-left: 8px solid var(--pink);
+    border-radius: 10px;
+  }
+  .asc b { color: var(--pink); }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; justify-content: center; }
+  #copied { text-align: center; color: var(--pink); min-height: 1.4em; margin: 8px 0 0; }
+
+  /* ===== tabela ===== */
+  .table-months { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 12px; }
+  .month {
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 8px 10px;
+    color: #fff;
+    font-family: 'Chewy', cursive;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 0 var(--ink);
+  }
+  .month small { display: block; font-family: 'Patrick Hand', cursive; font-size: 1rem; }
+
+  .three { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 14px; }
+  .three .card { border-style: solid; }
+  .three .card.f { border-color: var(--freud); }
+  .three .card.g { border-color: var(--gestalt); }
+  .three .card.b { border-color: var(--behav); }
+
+  /* ===== revista / sobre ===== */
+  .qr-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 16px; }
+  .qr-frame {
+    width: 220px; height: 220px;
+    background: #fff;
+    border: 4px dashed var(--pink);
+    border-radius: 18px;
+    padding: 14px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    transform: rotate(-2deg);
+    box-shadow: 6px 6px 0 var(--yellow);
+  }
+  #qrcode img, #qrcode canvas { width: 186px !important; height: 186px !important; display: block; }
+  .qr-placeholder { text-align: center; color: var(--purple); font-family: 'Chewy', cursive; font-size: 1.2rem; margin: 0; }
+  .qr-placeholder small { font-family: 'Patrick Hand', cursive; font-size: .95rem; }
+  .sobre ul { padding-left: 22px; margin: 10px 0 0; }
+  .sobre li { margin: 6px 0; }
+  .sobre li::marker { content: "♥  "; color: var(--pink); }
+
+  /* ===== rodapé ===== */
+  footer { text-align: center; font-size: 1.05rem; padding: 10px 0 30px; }
+  .counter {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #39ff14;
+    padding: 4px 10px;
+    border: 3px ridge #aaa;
+    letter-spacing: 3px;
+    margin: 8px 0;
+  }
+  .disclaimer {
+    background: var(--ink);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 1rem;
+    margin: 14px auto;
+    max-width: 640px;
+  }
+  .blink { animation: blink 1s steps(2, start) infinite; }
+  @keyframes blink { to { visibility: hidden; } }
+
+  /* ===== brilhinhos do cursor ===== */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 14px;
+    z-index: 999;
+    animation: fall 0.9s ease-out forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(30px) scale(0.2) rotate(180deg); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .ticker span { padding-left: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker" aria-hidden="true">
+  <span>★ NOVIDADE!!! ★ Descubra qual SUJEITO você é pela sua data de nascimento ★ Freud, Perls e Skinner consultaram os astros (ou quase) ★ Mande pras amigas!!! ★ É culpa da sua mãe? ★ Você é um homem ou um rato? ★ Viva o agora! ★</span>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <span class="edicao">Nº 942 · ESPECIAL HORÓSCOPO</span>
+    <h1 class="logo">Subjetividades</h1>
+    <p class="sublogo">o horóscopo do sujeito <span class="heart">♥</span></p>
+  </header>
+
+  <!-- ===== CONSULTA ===== -->
+  <section class="box intro" id="consulta">
+    <span class="sticker">GRÁTIS!!!</span>
+    <h2>Qual <span class="hl">sujeito</span> você é? ✨</h2>
+    <p>Esquece Áries, Touro e Gêmeos! Aqui os astros respondem a pergunta que realmente importa: <b>em que momento nos tornamos sujeitos no mundo?</b></p>
+    <p>Coloque sua data de nascimento e descubra se você é um sujeito <b style="color:var(--freud)">freudiano</b>, <b style="color:#c99500">gestaltiano</b> ou <b style="color:var(--behav)">behaviorista</b>. 🔮</p>
+
+    <form id="form" autocomplete="off">
+      <div class="field" style="flex-basis:100%">
+        <label for="nome">Seu nome (ou apelido fofo)</label>
+        <input id="nome" type="text" maxlength="30" placeholder="ex: Bia ♥">
+      </div>
+      <div class="field">
+        <label for="dia">Dia</label>
+        <select id="dia" required></select>
+      </div>
+      <div class="field">
+        <label for="mes">Mês</label>
+        <select id="mes" required></select>
+      </div>
+      <button class="btn" type="submit">🔮 Revelar meu sujeito!</button>
+    </form>
+    <p class="error" id="error" role="alert"></p>
+  </section>
+
+  <!-- ===== CARREGANDO ===== -->
+  <section class="box" id="loading" aria-live="polite">
+    <div class="crystal">🔮</div>
+    <p id="loadingText">consultando os astros...</p>
+  </section>
+
+  <!-- ===== RESULTADO ===== -->
+  <section class="box" id="result" aria-live="polite">
+    <span class="sticker" style="background:var(--pink)">SEU MAPA!</span>
+    <div class="result-head" id="rHead">
+      <div class="emoji" id="rEmoji"></div>
+      <p class="voce" id="rVoce"></p>
+      <p class="titulo" id="rTitulo"></p>
+      <div class="mentor" id="rMentor"></div>
+    </div>
+
+    <p class="lead" id="rLead"></p>
+    <p id="rDesc"></p>
+
+    <div class="stats" id="rStats"></div>
+
+    <div class="grid" id="rCards"></div>
+
+    <div class="meter">
+      <h3 style="font-family:'Chewy',cursive;color:var(--purple);margin:0 0 4px;font-size:1.35rem">💫 Seu mapa do sujeito</h3>
+      <div id="rMeter"></div>
+    </div>
+
+    <div class="asc" id="rAsc"></div>
+
+    <div class="quote" id="rQuote"></div>
+
+    <div class="actions">
+      <button class="btn small" id="share" type="button">💌 Compartilhar</button>
+      <button class="btn small alt" id="again" type="button">↺ Consultar outra data</button>
+    </div>
+    <p id="copied" aria-live="polite"></p>
+  </section>
+
+  <!-- ===== OS TRÊS SUJEITOS ===== -->
+  <section class="box">
+    <span class="sticker" style="background:var(--yellow);color:var(--ink)">LEIA!</span>
+    <h2>Os 3 <span class="hl">sujeitos</span> do zodíaco psi</h2>
+    <p>Sujeito pode ser quem <b>age, pensa e escolhe</b>, mas também quem está <b>sujeito a</b> algo que não controla. Cada abordagem responde de um jeito:</p>
+    <div class="three">
+      <div class="card f">
+        <h3>🧊 Freudiano</h3>
+        <p>Atravessado pelo <b>inconsciente</b>. O Eu media os desejos do Id e as cobranças do Super-eu. Não somos totalmente livres.</p>
+      </div>
+      <div class="card g">
+        <h3>🌻 Gestaltiano</h3>
+        <p>Um ser no <b>aqui e agora</b>, que se constitui na relação com o mundo, com escolhas, responsabilidade e potencialidades.</p>
+      </div>
+      <div class="card b">
+        <h3>🐭 Behaviorista</h3>
+        <p>Um organismo que <b>aprende</b> por estímulos e consequências. O comportamento é moldado pelo ambiente e pode ser modificado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TABELA DOS MESES ===== -->
+  <section class="box">
+    <h2>📅 Tabela dos <span class="hl">meses</span></h2>
+    <p>Curiosa(o) pra saber o sujeito do crush? Confere aqui:</p>
+    <div class="table-months" id="tabela"></div>
+  </section>
+
+  <!-- ===== REVISTA (QR CODE) ===== -->
+  <section class="box revista" id="revista">
+    <span class="sticker" style="background:var(--purple)">EXCLUSIVO!</span>
+    <h2>📖 Leia a <span class="hl">revista</span>!</h2>
+    <p>Entrevistas (fictícias!) com Freud, Perls e Skinner, jogo dos 7 erros, labirinto do Roberto, quiz e muito mais. Aponte a câmera do celular:</p>
+    <div class="qr-wrap">
+      <div class="qr-frame">
+        <div id="qrcode" aria-label="QR Code para abrir a revista"></div>
+        <p class="qr-placeholder" id="qrPlaceholder">QR Code da revista<br><small>(configure o link no código)</small></p>
+      </div>
+      <a class="btn small" id="revistaLink" href="#" target="_blank" rel="noopener">📖 Abrir a revista</a>
+    </div>
+  </section>
+
+  <!-- ===== SOBRE ===== -->
+  <section class="box sobre">
+    <span class="sticker" style="background:var(--ink)">IMPORTANTE</span>
+    <h2>🎓 Sobre este <span class="hl">site</span></h2>
+    <p>Este horóscopo é parte de um <b>trabalho acadêmico</b>: a Atividade Prática Supervisionada da disciplina de <b>História da Psicologia</b> da Unifanor Wyden (2026.2), que complementa a revista <b>Subjetividades</b>.</p>
+    <p>O conteúdo é <b>meramente lúdico e ilustrativo</b>. Ele foi criado para apresentar, de forma leve e divertida, diferentes concepções de sujeito na Psicologia.</p>
+    <ul>
+      <li>Os resultados <b>não têm validade científica</b> e não são um teste ou instrumento psicológico. Sua data de nascimento não define nada sobre você!</li>
+      <li>Os textos são <b>simplificações</b> e <b>não refletem a complexidade</b> da Psicanálise, da Gestalt-terapia e do Behaviorismo. Cada abordagem tem muito mais conceitos, debates e nuances do que cabe aqui.</li>
+      <li>As frases e falas atribuídas a Freud, Perls e Skinner são, em sua maioria, <b>fictícias</b>, escritas com fins educativos a partir das referências da revista.</li>
+      <li>Quer entender de verdade? Leia os autores, procure as referências bibliográficas da revista e, se precisar de cuidado, procure um(a) psicólogo(a). 💜</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div class="disclaimer">
+      ⚠️ <b>Lembre-se:</b> trabalho de faculdade, conteúdo lúdico e ilustrativo. <b>Não</b> é um instrumento psicológico validado, e os astros não têm nada a ver com isso. 😜
+    </div>
+    <p>Feito com ♥ para a revista <b>Subjetividades</b><br>
+      Atividade Prática Supervisionada · História da Psicologia · Unifanor Wyden · 2026.2</p>
+    <p>Equipe: Bianca, Carlos, Dara, Monalisa, Mylle, Patrícia, Rayane e Rebeka</p>
+    <p>Você é o visitante nº <span class="counter">000942</span> <span class="blink">★</span></p>
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* =========================================================
+   CONFIGURAÇÃO: link da revista (usado no QR Code e no botão).
+   - Se você colocar o PDF na mesma pasta com o nome "revista.pdf",
+     pode deixar como está.
+   - Ou cole aqui um link completo (Canva, Google Drive etc.),
+     ex: "https://www.canva.com/design/.../view"
+   ========================================================= */
+const REVISTA_URL = "revista.pdf";
+
+/* =========================================================
+   CONFIGURAÇÃO: qual sujeito pertence a cada mês.
+   Para mudar, troque "freud", "gestalt" ou "behav" abaixo.
+   ========================================================= */
+const MESES = [
+  { nome: "Janeiro",   sujeito: "freud"   },
+  { nome: "Fevereiro", sujeito: "gestalt" },
+  { nome: "Março",     sujeito: "behav"   },
+  { nome: "Abril",     sujeito: "freud"   },
+  { nome: "Maio",      sujeito: "gestalt" },
+  { nome: "Junho",     sujeito: "behav"   },
+  { nome: "Julho",     sujeito: "freud"   },
+  { nome: "Agosto",    sujeito: "gestalt" },
+  { nome: "Setembro",  sujeito: "behav"   },
+  { nome: "Outubro",   sujeito: "freud"   },
+  { nome: "Novembro",  sujeito: "gestalt" },
+  { nome: "Dezembro",  sujeito: "behav"   }
+];
+
+/* ===== textos de cada sujeito ===== */
+const SUJEITOS = {
+  freud: {
+    classe: "freud",
+    emoji: "🧊🛋️",
+    titulo: "Sujeito Freudiano",
+    curto: "Freudiano",
+    mentor: "Regido por Sigmund Freud · Psicanálise",
+    lead: "Você é um <strong>sujeito do inconsciente</strong>: quem te move nem sempre é você... pelo menos não a parte de você que você conhece!",
+    desc: "Para a psicanálise, sua vida psíquica tem três instâncias: o <b>Id</b>, que só quer prazer e não liga pra realidade; o <b>Super-eu</b>, um juiz que impõe regras morais (e que se formou lá no complexo de Édipo, com base nas suas figuras de cuidado); e o <b>Eu</b>, que vive tentando negociar entre os dois e a realidade. Você é exatamente esse equilíbrio, que nunca fica 100% resolvido. E tudo bem!",
+    stats: [
+      ["Planeta regente", "O Inconsciente 🪐"],
+      ["Elemento", "Água profunda (iceberg) 🧊"],
+      ["Cor da sorte", "Vinho-divã 🍷"],
+      ["Número da sorte", "3 (Id, Eu e Super-eu)"]
+    ],
+    cards: [
+      ["💘 Amor", "Jura que escolheu o crush por acaso? Repare: ele tem o mesmo jeitinho de alguém da sua infância. Coincidência? Freud acha que não."],
+      ["💼 Trabalho & estudos", "Chamou a professora de \"mãe\" na frente da turma? Ato falho, meu bem. Seu inconsciente está tentando te dizer alguma coisa."],
+      ["🧠 Mente", "Seu Super-eu anda cobrando demais. Deixe o Eu negociar um pouquinho com seus desejos, sem culpa exagerada."],
+      ["✨ Dica da semana", "Anote seus sonhos assim que acordar. Para Freud, eles são a estrada real para o inconsciente!"]
+    ],
+    quote: "“Foi sem querer, querendo.”",
+    quoteBy: "o seu inconsciente, provavelmente",
+    asc: "seus desejos e conflitos guardados no inconsciente"
+  },
+  gestalt: {
+    classe: "gestalt",
+    emoji: "🌻☀️",
+    titulo: "Sujeito Gestaltiano",
+    curto: "Gestaltiano",
+    mentor: "Regido por Fritz Perls · Gestalt-terapia",
+    lead: "Você é um <strong>sujeito do aqui e agora</strong>: se constrói no contato com o mundo, a cada momento, com responsabilidade pelas suas escolhas.",
+    desc: "Para a Gestalt-terapia, você não é um monte de partes soltas: você é um <b>todo</b> (e o todo é diferente da soma das partes!). Você existe <b>em relação</b> com o ambiente e com as outras pessoas, e é nesse contato que se constitui. O segredo é a <b>awareness</b>: perceber o que você sente, pensa e faz <i>agora</i>, assumindo a responsabilidade e reconhecendo suas potencialidades.",
+    stats: [
+      ["Planeta regente", "O Presente 🌞"],
+      ["Elemento", "Ar (fluxo e contato) 🌬️"],
+      ["Cor da sorte", "Amarelo-girassol 🌻"],
+      ["Número da sorte", "1 (o todo!)"]
+    ],
+    cards: [
+      ["💘 Amor", "Pare de ensaiar a conversa no chuveiro! Diga o que você sente agora, olho no olho. O contato verdadeiro acontece no presente."],
+      ["💼 Trabalho & estudos", "Aquele trabalho inacabado não sai da sua cabeça? É uma Gestalt aberta pedindo fechamento. Termine e sinta o alívio."],
+      ["🧠 Mente", "Respire e perceba seu corpo: os ombros, a mandíbula, a barriga. O corpo também fala, e ele fala no presente."],
+      ["✨ Dica da semana", "Experimente a técnica da cadeira vazia: imagine alguém sentado à sua frente e diga tudo o que ficou guardado."]
+    ],
+    quote: "“Eu faço as minhas coisas, você faz as suas.”",
+    quoteBy: "trecho da Oração da Gestalt, de Fritz Perls",
+    asc: "sua capacidade de sentir e de fazer contato no presente"
+  },
+  behav: {
+    classe: "behav",
+    emoji: "🐭🧀",
+    titulo: "Sujeito Behaviorista",
+    curto: "Behaviorista",
+    mentor: "Regido por B. F. Skinner · Behaviorismo",
+    lead: "Você é um <strong>sujeito que aprende</strong>: seu jeito de ser foi moldado pelas consequências do que você faz, e pode ser modificado!",
+    desc: "Para o behaviorismo radical de Skinner, você é um organismo que se comporta, e seu comportamento é função da sua <b>história de reforçamento</b> e do <b>ambiente</b>. Se algo que você fez trouxe uma consequência boa (<b>reforço</b>), a chance de repetir aumenta; se trouxe uma ruim (<b>punição</b>), diminui. Até pensar e sentir são comportamentos, só que privados. A boa notícia: mudando as contingências, você muda também.",
+    stats: [
+      ["Planeta regente", "O Reforço 🧀"],
+      ["Elemento", "Terra (laboratório) 🧪"],
+      ["Cor da sorte", "Azul-caixa-de-Skinner 🔵"],
+      ["Número da sorte", "7 (os 7 erros da revista!)"]
+    ],
+    cards: [
+      ["💘 Amor", "Mensagem respondida em 2 minutos = reforço positivo. Visualizou e não respondeu? Cuidado, a extinção está chegando..."],
+      ["💼 Trabalho & estudos", "Estudar 25 minutos e ganhar um chocolate: parabéns, você acabou de aplicar um esquema de reforço em si mesma(o)!"],
+      ["🧠 Mente", "Quer mudar um hábito? Em vez de só força de vontade, mude o ambiente. Celular longe = menos rolagem infinita."],
+      ["✨ Dica da semana", "Use a modelagem: reforce pequenos passos na direção do seu objetivo, em vez de esperar o resultado final."]
+    ],
+    quote: "“Pressiono barra em troca de comida.”",
+    quoteBy: "Roberto, o ratinho do laboratório",
+    asc: "os hábitos que você aprendeu com as consequências do ambiente"
+  }
+};
+
+const ORDEM = ["freud", "gestalt", "behav"];
+const COR = { freud: "var(--freud)", gestalt: "var(--gestalt)", behav: "var(--behav)" };
+
+/* ===== signo do zodíaco "de verdade", só por diversão ===== */
+function signoZodiaco(d, m) {
+  const s = [
+    [20, "Capricórnio", "Aquário"], [19, "Aquário", "Peixes"], [20, "Peixes", "Áries"],
+    [20, "Áries", "Touro"], [20, "Touro", "Gêmeos"], [20, "Gêmeos", "Câncer"],
+    [22, "Câncer", "Leão"], [22, "Leão", "Virgem"], [22, "Virgem", "Libra"],
+    [22, "Libra", "Escorpião"], [21, "Escorpião", "Sagitário"], [21, "Sagitário", "Capricórnio"]
+  ][m];
+  return d <= s[0] ? s[1] : s[2];
+}
+
+/* ===== monta selects e tabela ===== */
+const dia = document.getElementById("dia");
+const mes = document.getElementById("mes");
+dia.innerHTML = '<option value="">--</option>' +
+  Array.from({ length: 31 }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("");
+mes.innerHTML = '<option value="">--</option>' +
+  MESES.map((m, i) => `<option value="${i}">${m.nome}</option>`).join("");
+
+document.getElementById("tabela").innerHTML = MESES.map(m =>
+  `<div class="month" style="background:${COR[m.sujeito]}">${m.nome}<small>${SUJEITOS[m.sujeito].curto}</small></div>`
+).join("");
+
+/* ===== consulta ===== */
+const DIAS_NO_MES = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const LOADING_MSGS = [
+  "consultando os astros...",
+  "deitando no divã...",
+  "vivendo o aqui e agora...",
+  "pressionando a barra...",
+  "interpretando seus sonhos..."
+];
+
+function escapeHTML(s) {
+  return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+let ultimoTexto = "";
+
+document.getElementById("form").addEventListener("submit", e => {
+  e.preventDefault();
+  const err = document.getElementById("error");
+  const d = parseInt(dia.value, 10);
+  const m = parseInt(mes.value, 10);
+  if (!d || isNaN(m)) { err.textContent = "Ei! Escolha o dia e o mês do seu nascimento ♥"; return; }
+  if (d > DIAS_NO_MES[m]) { err.textContent = `Hmm... ${MESES[m].nome} não tem dia ${d}. Ato falho? 😜`; return; }
+  err.textContent = "";
+
+  const nome = document.getElementById("nome").value.trim();
+  const loading = document.getElementById("loading");
+  const result = document.getElementById("result");
+  result.style.display = "none";
+  loading.style.display = "block";
+  loading.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  let i = 0;
+  const txt = document.getElementById("loadingText");
+  txt.textContent = LOADING_MSGS[0];
+  const timer = setInterval(() => { i = (i + 1) % LOADING_MSGS.length; txt.textContent = LOADING_MSGS[i]; }, 450);
+
+  setTimeout(() => {
+    clearInterval(timer);
+    loading.style.display = "none";
+    mostrarResultado(d, m, nome);
+  }, 2200);
+});
+
+function mostrarResultado(d, m, nome) {
+  const chave = MESES[m].sujeito;
+  const S = SUJEITOS[chave];
+  // ascendente: depende do dia (sempre diferente do sujeito principal)
+  const outros = ORDEM.filter(k => k !== chave);
+  const ascKey = outros[d % 2];
+  const A = SUJEITOS[ascKey];
+  const resto = outros.find(k => k !== ascKey);
+
+  // porcentagens fixas para cada data
+  const pSol = 50 + (d * 7 + m * 3) % 21;          // 50–70
+  const pAsc = Math.round((100 - pSol) * (0.55 + (d % 5) * 0.08)); // maior parte do que sobra
+  const pResto = 100 - pSol - pAsc;
+  const pct = { [chave]: pSol, [ascKey]: pAsc, [resto]: pResto };
+
+  const nomeHTML = nome ? escapeHTML(nome) : "";
+  const signo = signoZodiaco(d, m);
+
+  document.getElementById("rHead").className = "result-head " + S.classe;
+  document.getElementById("rEmoji").textContent = S.emoji;
+  document.getElementById("rVoce").innerHTML = nomeHTML ? `${nomeHTML}, você é um...` : "Você é um...";
+  document.getElementById("rTitulo").textContent = S.titulo;
+  document.getElementById("rMentor").textContent = S.mentor;
+  document.getElementById("rLead").innerHTML = S.lead;
+  document.getElementById("rDesc").innerHTML = S.desc;
+
+  document.getElementById("rStats").innerHTML = S.stats
+    .map(([k, v]) => `<div class="stat"><b>${k}</b>${v}</div>`).join("");
+
+  document.getElementById("rCards").innerHTML = S.cards
+    .map(([t, p]) => `<div class="card"><h3>${t}</h3><p>${p}</p></div>`).join("");
+
+  document.getElementById("rMeter").innerHTML = ORDEM.map(k => `
+    <div class="meter-row">
+      <span>${SUJEITOS[k].curto}</span>
+      <div class="bar"><i data-w="${pct[k]}" style="background:${COR[k]}"></i></div>
+      <span>${pct[k]}%</span>
+    </div>`).join("");
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll("#rMeter .bar i").forEach(el => el.style.width = el.dataset.w + "%");
+  }));
+
+  document.getElementById("rAsc").innerHTML =
+    `🌙 <b>Ascendente ${A.curto}!</b> Quem nasceu no dia ${d} carrega também um pouquinho de ${A.asc}. ` +
+    `<br><small>(Seu signo do zodíaco é ${signo}, mas aqui quem manda é a teoria psicológica 😜)</small>`;
+
+  document.getElementById("rQuote").innerHTML = `${S.quote}<small>— ${S.quoteBy}</small>`;
+
+  ultimoTexto = `🔮 ${nome ? nome + ", eu" : "Eu"} sou um ${S.titulo} com ascendente ${A.curto}! ` +
+    `(${pSol}% ${S.curto}, ${pAsc}% ${A.curto}, ${pResto}% ${SUJEITOS[resto].curto}) ` +
+    `Descubra o seu no horóscopo da revista Subjetividades: ${location.href.split("#")[0]}`;
+
+  const result = document.getElementById("result");
+  result.style.display = "block";
+  result.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.getElementById("copied").textContent = "";
+}
+
+/* ===== compartilhar ===== */
+document.getElementById("share").addEventListener("click", async () => {
+  const msg = document.getElementById("copied");
+  try {
+    if (navigator.share) { await navigator.share({ text: ultimoTexto }); return; }
+    await navigator.clipboard.writeText(ultimoTexto);
+    msg.textContent = "Copiado! Agora é só colar no grupo da sala ♥";
+  } catch (e) {
+    if (e && e.name === "AbortError") return;
+    msg.textContent = ultimoTexto;
+  }
+});
+
+document.getElementById("again").addEventListener("click", () => {
+  document.getElementById("result").style.display = "none";
+  document.getElementById("consulta").scrollIntoView({ behavior: "smooth" });
+});
+
+/* ===== QR Code da revista ===== */
+(function () {
+  if (!REVISTA_URL) return;
+  const url = new URL(REVISTA_URL, location.href).href;
+  document.getElementById("revistaLink").href = url;
+  if (typeof QRCode === "undefined") return; // sem internet: fica o placeholder
+  new QRCode(document.getElementById("qrcode"), {
+    text: url, width: 186, height: 186,
+    colorDark: "#352a6b", colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.M
+  });
+  document.getElementById("qrPlaceholder").style.display = "none";
+})();
+
+/* ===== brilhinhos seguindo o mouse (bem anos 2000) ===== */
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const glitter = ["✦", "★", "♥", "✧", "·"];
+  const cores = ["#f0286e", "#ffe14d", "#37b6e9", "#352a6b", "#ff9ec4"];
+  let last = 0;
+  document.addEventListener("pointermove", e => {
+    const now = Date.now();
+    if (now - last < 45) return;
+    last = now;
+    const s = document.createElement("span");
+    s.className = "sparkle";
+    s.textContent = glitter[Math.floor(Math.random() * glitter.length)];
+    s.style.left = e.clientX + "px";
+    s.style.top = e.clientY + "px";
+    s.style.color = cores[Math.floor(Math.random() * cores.length)];
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 900);
+  });
+}
+</script>
+</body>
+</html>

@@ -7,7 +7,7 @@
 <meta name="description" content="Descubra qual sujeito você é pela sua data de nascimento: freudiano, gestaltiano ou behaviorista!">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Pacifico&family=Patrick+Hand&family=Bangers&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Titan+One&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,900,0..100,0..1;1,9..144,900,0..100,0..1&family=Pacifico&family=Patrick+Hand&family=Bangers&display=swap" rel="stylesheet">
 <style>
   :root {
     --pink: #f0286e;
@@ -23,7 +23,6 @@
     --behav: #1f9ad6;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
   body {
     margin: 0;
     font-family: 'Patrick Hand', 'Comic Sans MS', cursive;
@@ -72,15 +71,24 @@
     letter-spacing: 1px;
   }
   .logo {
-    font-family: 'Chewy', cursive;
-    font-size: clamp(2.6rem, 10vw, 5.4rem);
+    font-family: 'Fraunces', 'Chewy', serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 9.4vw, 5.6rem);
     color: var(--pink);
-    margin: 14px 0 0;
-    line-height: 1;
-    -webkit-text-stroke: 2px #fff;
-    text-shadow: 4px 4px 0 #fff, 7px 7px 0 var(--purple);
-    transform: rotate(-2deg);
+    margin: 22px 0 0;
+    padding: .3em .25em .12em;
+    line-height: 1.05;
+    white-space: nowrap;
+    display: inline-block;
+    transform: rotate(-2deg) scaleX(.85);
+    filter: url(#contorno);
   }
+  .logo span, .logo svg { display: inline-block; position: relative; }
+  .logo .it { font-style: italic; font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; }
+  .logo .re { font-style: normal; font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144; transform: skewX(-12deg); }
+  .logo .cap { font-size: 1.32em; }
+  .logo .a { transform: scaleX(-1) skewX(24deg); }
+  .logo .h { position: absolute; left: 66%; top: -.17em; width: .37em; height: .34em; transform: translateX(-50%); }
   .sublogo {
     font-family: 'Pacifico', cursive;
     font-size: clamp(1.3rem, 5vw, 2rem);
@@ -129,7 +137,7 @@
 
   /* ===== formulário ===== */
   form { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; margin-top: 16px; }
-  .field { display: flex; flex-direction: column; flex: 1 1 160px; }
+  .field { display: flex; flex-direction: column; flex: 1 1 120px; }
   label { font-family: 'Chewy', cursive; color: var(--pink); font-size: 1.25rem; }
   input, select {
     font-family: 'Patrick Hand', cursive;
@@ -142,6 +150,50 @@
     width: 100%;
   }
   input:focus, select:focus { outline: 3px dashed var(--pink); outline-offset: 2px; }
+  /* seletor de data próprio (sem a lista nativa do navegador) */
+  .pick {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.2rem;
+    padding: 10px 12px;
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    background: var(--pink-pale);
+    color: var(--ink);
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+  }
+  .pick::after { content: "▾"; position: absolute; right: 14px; color: var(--pink); }
+  .pick[aria-expanded="true"] { background: #fff; outline: 3px dashed var(--pink); outline-offset: 2px; }
+  .field.dd { position: relative; }
+  .dd-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    margin: 6px 0 0;
+    padding: 6px;
+    list-style: none;
+    max-height: 232px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    box-shadow: 5px 5px 0 var(--purple);
+  }
+  .dd-list[hidden] { display: none; }
+  .dd-list li {
+    padding: 7px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.15rem;
+  }
+  .dd-list li.ativo { background: var(--yellow); }
+  .dd-list li[aria-selected="true"] { background: var(--pink); color: #fff; }
+  .dd-list li[aria-disabled="true"] { opacity: .3; cursor: not-allowed; background: none; }
   .btn {
     font-family: 'Chewy', cursive;
     font-size: 1.5rem;
@@ -338,6 +390,14 @@
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="contorno" x="-8%" y="-40%" width="116%" height="180%" color-interpolation-filters="sRGB">
+  <feGaussianBlur id="cb1" in="SourceAlpha" stdDeviation="3.4"/><feComponentTransfer result="a1"><feFuncA type="linear" slope="60" intercept="-3"/></feComponentTransfer>
+  <feGaussianBlur id="cb2" in="SourceAlpha" stdDeviation="5.4"/><feComponentTransfer result="a2"><feFuncA type="linear" slope="60" intercept="-3"/></feComponentTransfer>
+  <feFlood flood-color="#ffffff"/><feComposite in2="a1" operator="in" result="branco"/>
+  <feFlood flood-color="#f0286e"/><feComposite in2="a2" operator="in" result="rosa"/>
+  <feOffset id="csh" in="a2" dx="3" dy="4" result="o"/><feFlood flood-color="#2a1d3d" flood-opacity=".35"/><feComposite in2="o" operator="in" result="sombra"/>
+  <feMerge><feMergeNode in="sombra"/><feMergeNode in="rosa"/><feMergeNode in="branco"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter></svg>
 
 <div class="ticker" aria-hidden="true">
   <span>★ NOVIDADE!!! ★ Descubra qual SUJEITO você é pela sua data de nascimento ★ Freud, Perls e Skinner consultaram os astros (mais ou menos) ★ Manda pras amigas!!! ★ É culpa da sua mãe? ★ Você é um homem ou um rato? ★ Viva o agora! ★</span>
@@ -346,8 +406,8 @@
 <div class="wrap">
 
   <header>
-    <span class="edicao">Nº 942 · ESPECIAL HORÓSCOPO</span>
-    <h1 class="logo">Subjetividades</h1>
+    <span class="edicao">N<span style="font-family:'Titan One',sans-serif;font-size:1.05em;vertical-align:.05em">º</span> 942 · ESPECIAL HORÓSCOPO</span>
+    <h1 class="logo" id="logo" aria-label="Subjetividades">SUBJETIVIDADES</h1>
     <p class="sublogo">o horóscopo do sujeito <span class="heart">♥</span></p>
   </header>
 
@@ -361,16 +421,20 @@
     <form id="form" autocomplete="off">
       <div class="field" style="flex-basis:100%">
         <label for="nome">Seu nome (ou aquele apelido fofo)</label>
-        <input id="nome" type="text" maxlength="30" placeholder="ex: Bia ♥">
+        <input id="nome" type="text" maxlength="30" placeholder="ex: Jung ♥">
       </div>
-      <div class="field">
-        <label for="dia">Dia</label>
-        <select id="dia" required></select>
+      <div class="field dd">
+        <label id="lblDia" for="pickDia">Dia</label>
+        <button type="button" class="pick" id="pickDia" aria-haspopup="listbox" aria-expanded="false" aria-controls="listDia">--</button>
+        <ul class="dd-list" id="listDia" role="listbox" aria-labelledby="lblDia" tabindex="-1" hidden></ul>
       </div>
-      <div class="field">
-        <label for="mes">Mês</label>
-        <select id="mes" required></select>
+      <div class="field dd">
+        <label id="lblMes" for="pickMes">Mês</label>
+        <button type="button" class="pick" id="pickMes" aria-haspopup="listbox" aria-expanded="false" aria-controls="listMes">--</button>
+        <ul class="dd-list" id="listMes" role="listbox" aria-labelledby="lblMes" tabindex="-1" hidden></ul>
       </div>
+      <select id="dia" hidden></select>
+      <select id="mes" hidden></select>
       <button class="btn" type="submit">🔮 Revelar meu sujeito!</button>
     </form>
     <p class="error" id="error" role="alert"></p>
@@ -608,6 +672,96 @@ dia.innerHTML = '<option value="">--</option>' +
 mes.innerHTML = '<option value="">--</option>' +
   MESES.map((m, i) => `<option value="${i}">${m.nome}</option>`).join("");
 
+/* ===== seletor de dia e mês (lista própria, sem a lista nativa do navegador) ===== */
+function criarSeletor(botao, lista, select, opcoes, aoEscolher) {
+  lista.innerHTML = opcoes.map(([v, t]) =>
+    `<li role="option" id="${lista.id}-${v}" data-v="${v}" aria-selected="false">${t}</li>`).join("");
+  const itens = [...lista.children];
+  let ativo = -1;
+
+  const validos = () => itens.filter(li => li.getAttribute("aria-disabled") !== "true");
+  function marcarAtivo(li) {
+    itens.forEach(x => x.classList.remove("ativo"));
+    if (!li) { ativo = -1; lista.removeAttribute("aria-activedescendant"); return; }
+    li.classList.add("ativo"); ativo = itens.indexOf(li);
+    lista.setAttribute("aria-activedescendant", li.id);
+    // rola só dentro da lista, nunca a página
+    if (li.offsetTop < lista.scrollTop) lista.scrollTop = li.offsetTop - 6;
+    else if (li.offsetTop + li.offsetHeight > lista.scrollTop + lista.clientHeight)
+      lista.scrollTop = li.offsetTop + li.offsetHeight - lista.clientHeight + 6;
+  }
+  function abrir() {
+    seletores.forEach(sel => sel !== api && sel.fechar());
+    lista.hidden = false; botao.setAttribute("aria-expanded", "true");
+    const sel = itens.find(li => li.dataset.v === select.value);
+    lista.scrollTop = sel ? sel.offsetTop - lista.clientHeight / 2 + sel.offsetHeight / 2 : 0;
+    marcarAtivo(sel || validos()[0]);
+    lista.focus({ preventScroll: true });
+  }
+  function fechar(focarBotao) {
+    if (lista.hidden) return;
+    lista.hidden = true; botao.setAttribute("aria-expanded", "false");
+    if (focarBotao) botao.focus({ preventScroll: true });
+  }
+  function escolher(li) {
+    if (!li || li.getAttribute("aria-disabled") === "true") return;
+    definir(li.dataset.v);
+    fechar(true);
+    aoEscolher(li.dataset.v);
+  }
+  function definir(v) {
+    select.value = v;
+    itens.forEach(li => li.setAttribute("aria-selected", li.dataset.v === String(v)));
+    const li = itens.find(x => x.dataset.v === String(v));
+    botao.textContent = li ? li.textContent : "--";
+    document.getElementById("error").textContent = "";
+  }
+
+  botao.addEventListener("click", () => lista.hidden ? abrir() : fechar());
+  botao.addEventListener("keydown", e => {
+    if (["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) { e.preventDefault(); abrir(); }
+  });
+  lista.addEventListener("click", e => escolher(e.target.closest("li")));
+  lista.addEventListener("mousemove", e => {
+    const li = e.target.closest("li");
+    if (li && li.getAttribute("aria-disabled") !== "true" && itens.indexOf(li) !== ativo) marcarAtivo(li);
+  });
+  lista.addEventListener("keydown", e => {
+    const v = validos(); const pos = v.indexOf(itens[ativo]);
+    if (e.key === "ArrowDown") { e.preventDefault(); marcarAtivo(v[Math.min(v.length - 1, pos + 1)]); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); marcarAtivo(v[Math.max(0, pos - 1)]); }
+    else if (e.key === "Home") { e.preventDefault(); marcarAtivo(v[0]); }
+    else if (e.key === "End") { e.preventDefault(); marcarAtivo(v[v.length - 1]); }
+    else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); escolher(itens[ativo]); }
+    else if (e.key === "Escape") { e.preventDefault(); fechar(true); }
+    else if (e.key === "Tab") fechar();
+  });
+
+  const api = { abrir, fechar, definir, itens, contem: el => botao.contains(el) || lista.contains(el) };
+  return api;
+}
+
+const seletores = [];
+const selDia = criarSeletor(document.getElementById("pickDia"), document.getElementById("listDia"), dia,
+  Array.from({ length: 31 }, (_, i) => [i + 1, i + 1]),
+  () => { if (mes.value === "") selMes.abrir(); });
+const selMes = criarSeletor(document.getElementById("pickMes"), document.getElementById("listMes"), mes,
+  MESES.map((m, i) => [i, m.nome]),
+  v => {
+    const max = DIAS_NO_MES[parseInt(v, 10)];
+    selDia.itens.forEach(li => li.setAttribute("aria-disabled", parseInt(li.dataset.v, 10) > max));
+    if (dia.value && parseInt(dia.value, 10) > max) {
+      selDia.definir("");
+      document.getElementById("error").textContent = `${MESES[v].nome} só vai até o dia ${max}. Escolhe o dia de novo? ♥`;
+    }
+  });
+seletores.push(selDia, selMes);
+
+// clicar fora fecha as listas
+document.addEventListener("pointerdown", e => {
+  seletores.forEach(sel => { if (!sel.contem(e.target)) sel.fechar(); });
+});
+
 document.getElementById("tabela").innerHTML = MESES.map(m =>
   `<div class="month" style="background:${COR[m.sujeito]}">${m.nome}<small>${SUJEITOS[m.sujeito].curto}</small></div>`
 ).join("");
@@ -732,6 +886,31 @@ document.getElementById("again").addEventListener("click", () => {
   document.getElementById("consulta").scrollIntoView({ behavior: "smooth" });
 });
 
+/* ===== logo SUBJETIVIDADES (Fraunces, estilo da capa) ===== */
+(function () {
+  const el = document.getElementById("logo");
+  const heart = '<svg class="h" viewBox="0 0 24 22" aria-hidden="true"><path fill="currentColor" d="M12 21.5C5 16 1 12.2 1 7.4 1 4 3.6 1.5 6.8 1.5c2.1 0 4 1.1 5.2 2.9 1.2-1.8 3.1-2.9 5.2-2.9C20.4 1.5 23 4 23 7.4c0 4.8-4 8.6-11 14.1z"/></svg>';
+  let primeiroI = true;
+  el.innerHTML = '<span aria-hidden="true">' + [..."SUBJETIVIDADES"].map((c, i) => {
+    let cls = (c === "J" || c === "T") ? "re" : "it";
+    if (i === 0) cls += " cap";
+    if (c === "A") cls += " a";
+    let extra = "";
+    if (c === "I" && primeiroI) { extra = heart; primeiroI = false; }
+    return `<span class="${cls}">${c}${extra}</span>`;
+  }).join("") + "</span>";
+  // contorno proporcional ao tamanho da fonte (celular x computador)
+  function ajustar() {
+    const k = parseFloat(getComputedStyle(el).fontSize) / 72;
+    document.getElementById("cb1").setAttribute("stdDeviation", 3.4 * k);
+    document.getElementById("cb2").setAttribute("stdDeviation", 5.4 * k);
+    const sh = document.getElementById("csh");
+    sh.setAttribute("dx", Math.max(1.5, 3 * k)); sh.setAttribute("dy", Math.max(2, 4 * k));
+  }
+  ajustar();
+  window.addEventListener("resize", ajustar);
+})();
+
 /* ===== QR Code da revista ===== */
 (function () {
   if (!REVISTA_URL) return;
@@ -754,6 +933,10 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   document.addEventListener("pointermove", e => {
     const now = Date.now();
     if (now - last < 45) return;
+    // não cria brilhinhos enquanto um seletor de data está aberto/em foco
+    const ativo = document.activeElement;
+    if (ativo && (ativo.tagName === "SELECT" || ativo.tagName === "INPUT" || ativo.closest(".dd"))) return;
+    if (e.target.closest && e.target.closest("select, input, label, .dd")) return;
     last = now;
     const s = document.createElement("span");
     s.className = "sparkle";
